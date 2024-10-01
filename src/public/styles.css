@@ -1,48 +1,129 @@
+/* Global Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-}
-
-h1 {
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient background */
     color: #333;
 }
 
-form {
+.container {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
+
+/* Heading Styles */
+h1 {
+    text-align: center;
+    color: #d9534f; /* Bootstrap danger color */
+    font-size: 2.5em;
     margin-bottom: 20px;
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 30px;
 }
 
 textarea {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    height: 120px;
+    padding: 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    resize: none;
+    font-size: 1em;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s;
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
+
+textarea:focus {
+    border-color: #d9534f; /* Focus color */
+    outline: none;
 }
 
 button {
-    background-color: #28a745;
+    width: 100%;
+    padding: 15px;
+    background-color: #d9534f; /* Bootstrap danger color */
     color: white;
-    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.3s;
+    box-sizing: border-box; /* Ensures padding is included in width */
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #c9302c; /* Darker shade on hover */
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+/* Confessions List Styles */
+.confessions-list {
+    margin-top: 20px;
 }
 
-li {
-    background: #fff;
-    margin: 10px 0;
+.confession-block {
+    background: #f2f2f2;
+    border-radius: 8px;
     padding: 15px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s;
+}
+
+.confession-block:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.confession-text {
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+.confession-time {
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 5px;
+    text-align: right; /* Align time to the right */
+}
+
+/* Go Back Link */
+.go-back {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #ff7e5f;
+    font-size: 1.1em;
+}
+
+.go-back:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    button {
+        font-size: 1em;
+    }
+
+    .confession-text {
+        font-size: 1em;
+    }
 }

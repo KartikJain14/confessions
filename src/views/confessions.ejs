@@ -4,15 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confessions</title>
-    <link rel="stylesheet" href="/styles.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <h1>Confessions</h1>
-    <ul>
-        <% confessions.forEach(confession => { %>
-            <li><%= confession.text %></li>
-        <% }) %>
-    </ul>
-    <a href="/">Go Back</a>
+    <div class="container">
+        <h1>Confessions</h1>
+        <div class="confessions-list">
+            <% if (confessions.length === 0) { %>
+                <p>No confessions yet. Be the first to share!</p>
+            <% } else { %>
+                <% confessions.forEach(confession => { %>
+                    <div class="confession-block">
+                        <p class="confession-text"><%= confession.text %></p>
+                        <p class="confession-time"><%= new Date(confession.createdAt).toLocaleString() %></p>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+        <a class="go-back" href="/">Go Back</a>
+    </div>
 </body>
 </html>

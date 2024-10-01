@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confession Page</title>
-    <link rel="stylesheet" href="/styles.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <h1>Confession Page</h1>
-    <form action="/confess" method="POST">
-        <textarea name="confession" rows="4" required placeholder="Your confession..."></textarea>
-        <button type="submit">Submit</button>
-    </form>
-    <a href="/confessions">View Confessions</a>
+    <div class="container">
+        <h1>Anonymous Confession</h1>
+        <form action="/confess" method="POST" class="confession-form">
+            <textarea name="confession" rows="4" required placeholder="What’s on your mind?"></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <a class="view-confessions" href="/confessions">View Previous Confessions.</a>
+    </div>
 </body>
 </html>

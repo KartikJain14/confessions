@@ -24,16 +24,44 @@ app.get('/', (req, res) => {
 
 app.post('/confess', async (req, res) => {
   const { confession } = req.body;
+
+  // Capture IP address and user agent
+  const ipAddress = req.ip || req.connection.remoteAddress;
+  const userAgent = req.headers['user-agent'];
+
   if (confession) {
-    await Confession.create({ text: confession });
+    await Confession.create({
+      text: confession,
+      ipAddress: ipAddress,
+      userAgent: userAgent,
+    });
   }
   res.redirect('/confessions');
 });
 
 app.get('/confessions', async (req, res) => {
-  const confessions = await Confession.findAll();
+  const confessions = await Confession.findAll({
+    order: [['createdAt', 'DESC']],
+  });
   res.render('confessions', { confessions });
 });
+
+app.post('/confess/update/:id', async (req, res) => {
+  const { confession } = req.body;
+  const confessionId = req.params.id;
+
+  try {
+    await Confession.update(
+      { text: confession },
+      { where: { id: confessionId } }
+    );
+    res.redirect('/confessions');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
