@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confession Page</title>
+    <title>Anonymous Confession</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
+<body class="body-index">
     <div class="container">
         <h1>Anonymous Confession</h1>
         <form action="/confess" method="POST" class="confession-form">
-            <textarea name="confession" rows="4" required placeholder="What’s on your mind?"></textarea>
+            <textarea name="confession" required placeholder="What’s on your mind?"></textarea>
             <button type="submit">Send</button>
         </form>
-        <a class="view-confessions" href="/confessions">View Previous Confessions.</a>
+        <a class="view-confessions" href="/confessions">View Previous Confessions</a>
     </div>
+    <script src="/index.js"></script>
 </body>
 </html>
