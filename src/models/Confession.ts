@@ -4,9 +4,10 @@ import sequelize from '../sequelize'; // Import the Sequelize instance
 export class Confession extends Model {
   public id!: number;
   public text!: string;
+  public score!: number;
   public createdAt!: Date; // Automatically populated
-  public ipAddress!: string; // For storing IP address
-  public userAgent!: string; // For storing user agent
+  protected ipAddress!: string; // For storing IP address
+  protected userAgent!: string; // For storing user agent
 }
 
 Confession.init(
@@ -19,6 +20,11 @@ Confession.init(
     text: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    score: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
     },
     createdAt: {
       type: DataTypes.DATE,

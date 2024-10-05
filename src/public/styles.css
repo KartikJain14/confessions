@@ -57,12 +57,14 @@ button {
     border-radius: 6px;
     cursor: pointer;
     font-size: 1.2em;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
     box-sizing: border-box; /* Ensures padding is included in width */
+    margin-bottom: 10px; /* Space between buttons */
 }
 
 button:hover {
     background-color: #c9302c; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
 }
 
 /* Confessions List Styles */
@@ -95,6 +97,21 @@ button:hover {
     text-align: right; /* Align time to the right */
 }
 
+/* Voting Buttons Container */
+.voting-buttons {
+    display: flex;
+    justify-content: space-between; /* Space out buttons */
+}
+
+.voting-buttons button {
+    flex: 1; /* Make buttons equal width */
+    margin-right: 5px; /* Space between buttons */
+}
+
+.voting-buttons button:last-child {
+    margin-right: 0; /* Remove margin from the last button */
+}
+
 /* Go Back Link */
 .go-back {
     display: block;
@@ -125,5 +142,14 @@ button:hover {
 
     .confession-text {
         font-size: 1em;
+    }
+
+    .voting-buttons {
+        flex-direction: column; /* Stack buttons on smaller screens */
+    }
+
+    .voting-buttons button {
+        margin-right: 0; /* No margin in column layout */
+        margin-bottom: 10px; /* Space between stacked buttons */
     }
 }

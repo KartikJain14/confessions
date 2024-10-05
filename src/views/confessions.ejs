@@ -9,19 +9,28 @@
 <body>
     <div class="container">
         <h1>Confessions</h1>
+        View Confessions sorted by:
+        <a class="view-votes" href="/confessions?sort=vote">Votes</a>
+        <a class="view-time" href="/confessions?sort=time">Time</a>
         <div class="confessions-list">
             <% if (confessions.length === 0) { %>
                 <p>No confessions yet. Be the first to share!</p>
             <% } else { %>
                 <% confessions.forEach(confession => { %>
-                    <div class="confession-block">
+                    <div class="confession-block" id="confession-<%= confession.id %>">
                         <p class="confession-text"><%= confession.text %></p>
                         <p class="confession-time"><%= new Date(confession.createdAt).toLocaleString() %></p>
+                        <p class="confession-score">Votes: <span id="score-<%= confession.id %>"><%= confession.score || 0 %></span></p>
+                        <div class="voting-buttons">
+                            <button type="button" class="vote-button" data-id="<%= confession.id %>" data-value="1">Upvote</button>
+                            <button type="button" class="vote-button" data-id="<%= confession.id %>" data-value="-1">Downvote</button>
+                        </div>
                     </div>
                 <% }) %>
             <% } %>
         </div>
         <a class="go-back" href="/">Go Back</a>
     </div>
+    <script src="/index.js"></script>
 </body>
 </html>
