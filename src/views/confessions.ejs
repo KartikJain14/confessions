@@ -25,6 +25,7 @@
                         <p class="confession-time"><%= new Date(confession.createdAt).toLocaleString() %></p>
                         <div class="voting-info">
                             <p class="confession-score">Votes: <span id="score-<%= confession.id %>"><%= confession.score || 0 %></span></p>
+                            <a href="/confession/<%= confession.id %>" class="go-back">View</a>
                             <div class="voting-buttons">
                                 <button type="button" class="vote-button" data-id="<%= confession.id %>" data-value="1">&#x25B2;</button>
                                 <button type="button" class="vote-button" data-id="<%= confession.id %>" data-value="-1">&#x25BC;</button>

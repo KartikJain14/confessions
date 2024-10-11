@@ -57,3 +57,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+function copyLink(button){
+    navigator.clipboard.writeText(window.location.href);
+    button.innerText = 'Copied!';
+    setTimeout(() => {
+        button.innerText = 'Copy URL';
+    }, 2000);
+}
+
+document.getElementById('confessionForm').addEventListener('submit', function(event) {
+    const confession = document.getElementById('confession').value;
+    const errorMessage = document.getElementById('error-message');
+    
+    if (confession.length < 10 || confession.length > 255) {
+        event.preventDefault(); // Prevent form submission
+        errorMessage.textContent = "Confession must be between 10 and 255 characters.";
+        errorMessage.style.display = "block";
+    } else {
+        errorMessage.style.display = "none"; // Hide error message if valid
+    }
+});

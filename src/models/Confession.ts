@@ -6,8 +6,9 @@ export class Confession extends Model {
   public text!: string;
   public score!: number;
   public createdAt!: Date; // Automatically populated
-  protected ipAddress!: string; // For storing IP address
-  protected userAgent!: string; // For storing user agent
+  public archived!: boolean; // Automatically populated
+  public ipAddress!: string; // For storing IP address
+  public userAgent!: string; // For storing user agent
 }
 
 Confession.init(
@@ -30,6 +31,11 @@ Confession.init(
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
+    },
+    archived: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
     ipAddress: {
       type: DataTypes.STRING,

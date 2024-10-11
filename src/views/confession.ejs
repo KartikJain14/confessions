@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confessions</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Confession:</h1>
+        <p class="confession-text">ID: <%= confession.id %></p>
+        <p class="confession-text">Time: <%= new Date(confession.createdAt).toLocaleString() %></p>
+        <p class="confession-text">Text: <%= confession.text %></p>
+        <p class="confession-text">Votes: <%= confession.score %></p>
+        <p><button type="button" onclick="copyLink(this)">Copy URL</button></p>
+    </div>
+    <script src="/index.js"></script>
+</body>
+</html>

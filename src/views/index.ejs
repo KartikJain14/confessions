@@ -9,9 +9,10 @@
 <body class="body-index">
     <div class="container">
         <h1>Anonymous Confession</h1>
-        <form action="/confess" method="POST" class="confession-form">
-            <textarea name="confession" required placeholder="What’s on your mind?"></textarea>
+        <form action="/confess" method="POST" class="confession-form" id="confessionForm">
+            <textarea name="confession" id="confession" required placeholder="What’s on your mind?" minlength="10" maxlength="255"></textarea>
             <button type="submit">Send</button>
+            <div id="error-message" style="color: red; display: none;"></div>
         </form>
         <a class="view-confessions" href="/confessions">View Previous Confessions</a>
     </div>
