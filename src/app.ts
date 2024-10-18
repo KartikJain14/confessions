@@ -13,29 +13,12 @@ const voteLimiter = rateLimit({
   message: 'Too many requests, please try again later.'
 });
 
-const basicAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const auth = req.headers.authorization;
-
-  if (!auth) {
-      res.status(401).set('WWW-Authenticate', 'Basic').send('Authentication required.');
-  } else {
-      const [username, password] = Buffer.from(auth.split(' ')[1], 'base64').toString().split(':');
-
-      if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
-          next(); // Proceed to the next middleware or route handler
-      } else {
-          res.status(403).send('Forbidden');
-      }
-  }
-};
-
 const app = express();
-app.set('trust proxy', true);
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use('/admin', basicAuth);
 app.use(cors());
+app.set('case sensitive routing', true);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
@@ -185,8 +168,7 @@ async function purgeConfessions() {
 
 setInterval(purgeConfessions, 1000 * 60 * 60); // Purge confessions every hour
 
-// Admin route to view all confessions
-app.get('/admin', async (req, res) => {
+app.get(`/${process.env.ADMIN_PATH}`, async (req, res) => {
   const confessions = await Confession.findAll();
   res.send(`
       <h1>Admin Portal</h1>
@@ -205,7 +187,7 @@ app.get('/admin', async (req, res) => {
                   <td>${confession.score}</td>
                   <td>${confession.archived}</td>
                   <td>
-                      <form action="/admin/edit/${confession.id}" method="GET" style="display:inline;">
+                      <form action="/${process.env.ADMIN_PATH}/edit/${confession.id}" method="GET" style="display:inline;">
                           <button type="submit">Edit</button>
                       </form>
                   </td>
@@ -216,7 +198,7 @@ app.get('/admin', async (req, res) => {
 });
 
 // Route to serve the edit form
-app.get('/admin/edit/:id', async (req, res) => {
+app.get(`/${process.env.ADMIN_PATH}/edit/:id`, async (req, res) => {
   const confession = await Confession.findByPk(req.params.id);
   if (!confession) {
     res.status(404).send('Confession not found');
@@ -224,7 +206,7 @@ app.get('/admin/edit/:id', async (req, res) => {
   }
   res.send(`
       <h1>Edit Confession</h1>
-      <form action="/admin/update" method="POST">
+      <form action="/${process.env.ADMIN_PATH}/update" method="POST">
           <input type="hidden" name="id" value="${confession.id}">
           <label for="text">Confession Text:</label>
           <input type="text" id="text" name="text" value="${confession.text}" required>
@@ -236,12 +218,12 @@ app.get('/admin/edit/:id', async (req, res) => {
           </label>
           <button type="submit">Update</button>
       </form>
-      <a href="/admin">Cancel</a>
+      <a href="/${process.env.ADMIN_PATH}">Cancel</a>
   `);
 });
 
 // Route to handle updates
-app.post('/admin/update', async (req, res) => {
+app.post(`/${process.env.ADMIN_PATH}/update`, async (req, res) => {
   const { id, text, score, archived } = req.body;
   const confession = await Confession.findByPk(id);
 
@@ -250,7 +232,7 @@ app.post('/admin/update', async (req, res) => {
       confession.score = score || confession.score;
       confession.archived = archived === 'on'; // Convert checkbox to boolean
       await confession.save();
-      res.redirect('/admin');
+      res.redirect(`/${process.env.ADMIN_PATH}`);
   } else {
       res.status(404).send('Confession not found');
   }
