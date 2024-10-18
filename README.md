@@ -9,7 +9,7 @@ Welcome to the **Confession App**! This web application, built with **Express.js
 - **🤫 Anonymous Submissions**: Users can submit confessions within a character limit.
 - **👍 Upvote & 👎 Downvote**: Users can vote on confessions, influencing their visibility.
 - **🛠 Admin Panel**: View, edit, and delete confessions with ease.
-- **🚦 Rate Limiting**: Protects against abuse with configurable voting limits.
+- **🚦 Rate Limiting**: Protects against abuse with configurable voting and posting limits.
 - **🕒 Automatic Archiving**: Low-scoring confessions are automatically archived.
 - **📱 Responsive Design**: Enjoy a smooth experience across devices.
 
@@ -30,25 +30,28 @@ Follow these steps to host your own Confession App:
 1. **Clone the Repository**:
 
    git clone https://github.com/KartikJain14/confessions.git
-
    cd confessions
 
 2. **Install Dependencies**:
 
    npm install
 
-3. **[OPTIONAL] Create a `.env` File**:
+3. **Create a `.env` File**:
 
    Add the following environment variables in a `.env` file:
 
    PORT=3000
-   ADMIN_PATH=admin
-   VOTE_WINDOW=1
-   VOTE_LIMIT=15
+   ADMIN_PATH=iWokeUpInTheMiddleOfTheNight
+   VOTE_WINDOW=3 # hours
+   VOTE_LIMIT=10 # votes per IP per hour
+   POST_WINDOW=3 # hours
+   POST_LIMIT=3 # posts per IP per hour
+   LOWEST_SCORE=-5
 
 4. **Set Up Your Database**: Configure your database and update the Sequelize settings as necessary.
 
 ## 🏃 Usage
+
 1. **Start the Server**:
 
    npm start
@@ -76,9 +79,12 @@ Follow these steps to host your own Confession App:
 Make sure to set the following environment variables in your `.env` file:
 
 - **`PORT`**: Port on which the server will run (default: 3000).
-- **`ADMIN_PATH`**: Path for admin routes (default: 'admin').
+- **`ADMIN_PATH`**: Path for admin routes (default: `admin`).
 - **`VOTE_WINDOW`**: Time window for vote limiting in hours (default: 1).
 - **`VOTE_LIMIT`**: Maximum votes per IP per time window (default: 15).
+- **`POST_WINDOW`**: Time window for post limiting in hours (default: 1).
+- **`POST_LIMIT`**: Maximum posts per IP per time window (default: 2).
+- **`LOWEST_SCORE`**: Score threshold for automatic archiving of confessions (default: -10).
 
 ## 🤝 Contributing
 

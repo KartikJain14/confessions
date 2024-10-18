@@ -16,6 +16,13 @@ const voteLimiter = rateLimit({
   message: 'Too many requests, please try again later.'
 });
 
+// Rate limiter for posting confessions
+const postLimiter = rateLimit({
+  windowMs: (parseInt(process.env.POST_WINDOW || '1', 10) * 60 * 60 * 1000),
+  max: parseInt(process.env.POST_LIMIT || '2', 10),
+  message: 'Too many requests, please try again later.'
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -80,7 +87,7 @@ app.get(`/${ADMIN_PATH}/edit/:id`, async (req, res) => {
 
 // POST Routes
 // Handle confession creation
-app.post('/confess', voteLimiter, async (req, res) => {
+app.post('/confess', postLimiter, async (req, res) => {
   const { confession } = req.body;
   const ipAddress = req.ip || req.connection.remoteAddress; // Get IP address
   const userAgent = req.headers['user-agent']; // Get user agent
@@ -160,9 +167,9 @@ async function purgeConfessions() {
     order: [['score', 'DESC']],
     where: { archived: false }
   });
-
+  const lowestScore = parseInt(process.env.LOWEST_SCORE || '-10');
   for (const confession of confessions) {
-    if (confession.score <= -10) {
+    if (confession.score <= lowestScore) {
       await Confession.update({ archived: true }, { where: { id: confession.id } }); // Archive confessions with low score
     }
   }
