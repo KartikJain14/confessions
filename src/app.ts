@@ -7,6 +7,8 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 dotenv.config();
 
+const ADMIN_PATH = process.env.ADMIN_PATH || 'admin';
+
 const voteLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
   max: 15, // Limit each IP to 15 requests per windowMs
@@ -168,7 +170,7 @@ async function purgeConfessions() {
 
 setInterval(purgeConfessions, 1000 * 60 * 60); // Purge confessions every hour
 
-app.get(`/${process.env.ADMIN_PATH}`, async (req, res) => {
+app.get(`/${ADMIN_PATH}`, async (req, res) => {
   const confessions = await Confession.findAll();
   res.send(`
       <h1>Admin Portal</h1>
@@ -187,7 +189,7 @@ app.get(`/${process.env.ADMIN_PATH}`, async (req, res) => {
                   <td>${confession.score}</td>
                   <td>${confession.archived}</td>
                   <td>
-                      <form action="/${process.env.ADMIN_PATH}/edit/${confession.id}" method="GET" style="display:inline;">
+                      <form action="/${ADMIN_PATH}/edit/${confession.id}" method="GET" style="display:inline;">
                           <button type="submit">Edit</button>
                       </form>
                   </td>
@@ -198,7 +200,7 @@ app.get(`/${process.env.ADMIN_PATH}`, async (req, res) => {
 });
 
 // Route to serve the edit form
-app.get(`/${process.env.ADMIN_PATH}/edit/:id`, async (req, res) => {
+app.get(`/${ADMIN_PATH}/edit/:id`, async (req, res) => {
   const confession = await Confession.findByPk(req.params.id);
   if (!confession) {
     res.status(404).send('Confession not found');
@@ -206,7 +208,7 @@ app.get(`/${process.env.ADMIN_PATH}/edit/:id`, async (req, res) => {
   }
   res.send(`
       <h1>Edit Confession</h1>
-      <form action="/${process.env.ADMIN_PATH}/update" method="POST">
+      <form action="/${ADMIN_PATH}/update" method="POST">
           <input type="hidden" name="id" value="${confession.id}">
           <label for="text">Confession Text:</label>
           <input type="text" id="text" name="text" value="${confession.text}" required>
@@ -218,12 +220,12 @@ app.get(`/${process.env.ADMIN_PATH}/edit/:id`, async (req, res) => {
           </label>
           <button type="submit">Update</button>
       </form>
-      <a href="/${process.env.ADMIN_PATH}">Cancel</a>
+      <a href="/${ADMIN_PATH}">Cancel</a>
   `);
 });
 
 // Route to handle updates
-app.post(`/${process.env.ADMIN_PATH}/update`, async (req, res) => {
+app.post(`/${ADMIN_PATH}/update`, async (req, res) => {
   const { id, text, score, archived } = req.body;
   const confession = await Confession.findByPk(id);
 
@@ -232,7 +234,7 @@ app.post(`/${process.env.ADMIN_PATH}/update`, async (req, res) => {
       confession.score = score || confession.score;
       confession.archived = archived === 'on'; // Convert checkbox to boolean
       await confession.save();
-      res.redirect(`/${process.env.ADMIN_PATH}`);
+      res.redirect(`/${ADMIN_PATH}`);
   } else {
       res.status(404).send('Confession not found');
   }
