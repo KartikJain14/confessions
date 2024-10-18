@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Disable the buttons
                 disableButtons(confessionId);
             } else {
-                alert('Error voting. Please try again.');
+                alert('Error voting. Please try again later.');
             }
         })
         .catch(error => {
