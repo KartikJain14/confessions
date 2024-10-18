@@ -172,68 +172,43 @@ setInterval(purgeConfessions, 1000 * 60 * 60); // Purge confessions every hour
 
 app.get(`/${ADMIN_PATH}`, async (req, res) => {
   const confessions = await Confession.findAll();
-  res.send(`
-      <h1>Admin Portal</h1>
-      <table>
-          <tr>
-              <th>ID</th>
-              <th>Text</th>
-              <th>Score</th>
-              <th>Archived</th>
-              <th>Actions</th>
-          </tr>
-          ${confessions.map(confession => `
-              <tr>
-                  <td>${confession.id}</td>
-                  <td>${confession.text}</td>
-                  <td>${confession.score}</td>
-                  <td>${confession.archived}</td>
-                  <td>
-                      <form action="/${ADMIN_PATH}/edit/${confession.id}" method="GET" style="display:inline;">
-                          <button type="submit">Edit</button>
-                      </form>
-                  </td>
-              </tr>
-          `).join('')}
-      </table>
-  `);
+  res.render('admin', { confessions, ADMIN_PATH });
 });
 
 // Route to serve the edit form
 app.get(`/${ADMIN_PATH}/edit/:id`, async (req, res) => {
   const confession = await Confession.findByPk(req.params.id);
   if (!confession) {
-    res.status(404).send('Confession not found');
-    return;
+      res.status(404).send('Confession not found');
+      return;
   }
-  res.send(`
-      <h1>Edit Confession</h1>
-      <form action="/${ADMIN_PATH}/update" method="POST">
-          <input type="hidden" name="id" value="${confession.id}">
-          <label for="text">Confession Text:</label>
-          <input type="text" id="text" name="text" value="${confession.text}" required>
-          <label for="score">Score:</label>
-          <input type="number" id="score" name="score" value="${confession.score}" min="1" required>
-          <label>
-              <input type="checkbox" name="archived" ${confession.archived ? 'checked' : ''}>
-              Archived
-          </label>
-          <button type="submit">Update</button>
-      </form>
-      <a href="/${ADMIN_PATH}">Cancel</a>
-  `);
+  res.render('edit', { confession, ADMIN_PATH });
 });
+
 
 // Route to handle updates
 app.post(`/${ADMIN_PATH}/update`, async (req, res) => {
-  const { id, text, score, archived } = req.body;
-  const confession = await Confession.findByPk(id);
+    const { id, text, score, archived, ipAddress, userAgent } = req.body;
+    const confession = await Confession.findByPk(id);
 
+    if (confession) {
+        confession.text = text || confession.text;
+        confession.score = score || confession.score;
+        confession.archived = archived === 'on';
+        confession.ipAddress = ipAddress || confession.ipAddress;
+        confession.userAgent = userAgent || confession.userAgent;
+        await confession.save();
+        res.redirect(`/${ADMIN_PATH}`);
+    } else {
+        res.status(404).send('Confession not found');
+    }
+});
+
+app.post(`/${ADMIN_PATH}/delete/:id`, async (req, res) => {
+  const confession = await Confession.findByPk(req.params.id);
+  
   if (confession) {
-      confession.text = text || confession.text;
-      confession.score = score || confession.score;
-      confession.archived = archived === 'on'; // Convert checkbox to boolean
-      await confession.save();
+      await confession.destroy();
       res.redirect(`/${ADMIN_PATH}`);
   } else {
       res.status(404).send('Confession not found');
