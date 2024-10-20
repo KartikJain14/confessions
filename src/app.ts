@@ -1,13 +1,15 @@
 import express from 'express';
-import sequelize from './sequelize';
-import { Confession } from './models/Confession';
+import { Confession, initializeConfessionModel } from './models/Confession';
 import path from 'path';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import initializeSequelize from './sequelize';
 dotenv.config();
 
 const ADMIN_PATH = process.env.ADMIN_PATH || 'admin';
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Rate limiter for voting
 const voteLimiter = rateLimit({
@@ -23,25 +25,37 @@ const postLimiter = rateLimit({
   message: 'Too many requests, please try again later.'
 });
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware and Setup
 app.use(cors()); // Enable CORS
-app.set('case sensitive routing', true); // Case sensitivity for routes
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
-app.set('view engine', 'ejs'); // Set EJS as the view engine
-app.set('views', path.join(__dirname, 'views')); // Set the views directory
+app.set('case sensitive routing', true);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.stack); // Log errors to the console
-  res.status(500).send('Something went wrong!'); // Send a 500 error response
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
 
-// Sync database and log status
-sequelize.sync().then(() => {
-  console.log('Database synced');
-});
+const startServer = async () => {
+  try {
+    const sequelize = await initializeSequelize(); // Initialize Sequelize
+    await initializeConfessionModel(sequelize); // Pass the Sequelize instance
+
+    // Sync database and log status
+    await sequelize.sync();
+    console.log('Database synced');
+
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1); // Exit the process if initialization fails
+  }
+};
+
+
 
 // GET Routes
 // Render the homepage
@@ -177,8 +191,6 @@ async function purgeConfessions() {
 
 // Set interval for purging confessions
 setInterval(purgeConfessions, 1000 * 60 * 60); // Purge confessions every hour
-
-// Start the server and log the status
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+startServer().catch((err) => {
+  console.error('Failed to start the server:', err);
 });
