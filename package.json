@@ -4,7 +4,7 @@
   "description": "Anonymous Confession Page",
   "main": "dist/app.js",
   "scripts": {
-    "build": "tsc && copyfiles -u 1 src/views/* dist/views && copyfiles -u 1 src/public/* dist/public",
+    "build": "tsc && copyfiles -u 1 src/views/* dist/ && copyfiles -u 1 src/public/* dist/",
     "start": "node dist/app.js",
     "dev": "ts-node src/app.ts"
   },
