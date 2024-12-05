@@ -1,18 +1,26 @@
 name: Confessions CI/CD
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build-and-deploy:
     runs-on: self-hosted
+
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+
+      # Step 3: Generate .env file from GitHub Secrets
       - name: Generate .env file
         run: |
           echo "PORT=${{ secrets.PORT }}" >> .env
@@ -23,13 +31,27 @@ jobs:
           echo "ADMIN_PATH=${{ secrets.ADMIN_PATH }}" >> .env
           echo "LOWEST_SCORE=${{ secrets.LOWEST_SCORE }}" >> .env
           echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
+
+      # Step 4: Install dependencies
       - name: Install dependencies
         run: npm install
+
+      # Step 5: Build the project
       - name: Run build
         run: npm run build
-      - name: Run start
+
+      # Step 6: Kill any existing server process (if any)
+      - name: Kill previous screen session (if any)
         run: |
-          nohup npm run start &
-          disown
-      - name: Check if server is running
-        run: curl http://localhost:${{ secrets.PORT }} || exit 1
+          # Check if there is an existing screen session and kill it if it exists
+          screen -ls | grep -q 'confessions' && screen -S confessions -X quit || echo "No previous screen session found."
+
+      # Step 7: Start server in screen (background session)
+      - name: Start server in screen session
+        run: |
+          # Start the server in a new screen session
+          screen -dmS confessions npm run start  # '-dmS' runs in detached mode with session name 'confessions'
+
+      # Optional Step: Verify the app is running
+      - name: Verify if app is running
+        run: curl http://localhost:${{ secrets.PORT }} || exit 1  # Ensure your app is responding
