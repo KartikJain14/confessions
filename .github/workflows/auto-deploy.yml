@@ -30,5 +30,6 @@ jobs:
       - name: Run start
         run: |
           nohup npm run start &
+          disown
       - name: Check if server is running
         run: curl http://localhost:${{ secrets.PORT }} || exit 1
