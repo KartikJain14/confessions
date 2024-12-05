@@ -28,4 +28,7 @@ jobs:
       - name: Run build
         run: npm run build
       - name: Run start
-        run: npm run start
+        run: |
+          nohup npm run start &
+      - name: Check if server is running
+        run: curl http://localhost:${{ secrets.PORT }} || exit 1
