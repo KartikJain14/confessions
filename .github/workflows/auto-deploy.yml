@@ -44,13 +44,13 @@ jobs:
       - name: Kill previous screen session (if any)
         run: |
           # Check if there is an existing screen session and kill it if it exists
-          screen -ls | grep -q 'confessions' && screen -S confessions -X quit || echo "No previous screen session found."
+          screen kill confessions || echo "No previous screen session found."
 
       # Step 7: Start server in screen (background session)
       - name: Start server in screen session
         run: |
           # Start the server in a new screen session
-          screen -dmS confessions npm run start  # '-dmS' runs in detached mode with session name 'confessions'
+          screen -dmS confessions npm run start >> server_output.log 2>&1
 
       # Optional Step: Verify the app is running
       - name: Verify if app is running
