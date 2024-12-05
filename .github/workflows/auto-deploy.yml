@@ -1,0 +1,31 @@
+name: Confessions CI/CD
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Generate .env file
+        run: |
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "VOTE_WINDOW=${{ secrets.VOTE_WINDOW }}" >> .env
+          echo "VOTE_LIMIT=${{ secrets.VOTE_LIMIT }}" >> .env
+          echo "POST_WINDOWS=${{ secrets.POST_WINDOWS }}" >> .env
+          echo "POST_LIMIT=${{ secrets.POST_LIMIT }}" >> .env
+          echo "ADMIN_PATH=${{ secrets.ADMIN_PATH }}" >> .env
+          echo "LOWEST_SCORE=${{ secrets.LOWEST_SCORE }}" >> .env
+          echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
+      - name: Install dependencies
+        run: npm install
+      - name: Run build
+        run: npm run build
+      - name: Run start
+        run: npm run start
