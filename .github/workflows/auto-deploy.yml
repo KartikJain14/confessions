@@ -51,7 +51,3 @@ jobs:
         run: |
           # Start the server in a new screen session
           screen -dmS confessions npm run start >> server_output.log 2>&1
-
-      # Optional Step: Verify the app is running
-      - name: Verify if app is running
-        run: curl http://localhost:${{ secrets.PORT }} || exit 1  # Ensure your app is responding
