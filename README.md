@@ -41,14 +41,20 @@ Follow these steps to host your own Confession App:
    Add the following environment variables in a `.env` file:
 
    PORT=3000
-   ADMIN_PATH=iWokeUpInTheMiddleOfTheNight
+   
+   ADMIN_PATH=admin
+   
    VOTE_WINDOW=3 # hours
+   
    VOTE_LIMIT=10 # votes per IP per hour
+   
    POST_WINDOW=3 # hours
+   
    POST_LIMIT=3 # posts per IP per hour
+   
    LOWEST_SCORE=-5
 
-4. **Set Up Your Database**: Configure your database and update the Sequelize settings as necessary.
+5. **Set Up Your Database**: Configure your database and update the Sequelize settings as necessary.
 
 ## 🏃 Usage
 
