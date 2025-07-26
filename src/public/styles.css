@@ -384,7 +384,4 @@ button:hover {
     .confession-block {
         padding: 20px;
     }
-    .sorting-div {
-        flex-direction: column;
-    }
 }

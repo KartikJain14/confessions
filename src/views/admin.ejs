@@ -147,8 +147,6 @@
                     <th>Text</th>
                     <th>Score</th>
                     <th>Archived</th>
-                    <th>IP Address</th>
-                    <th>User Agent</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -159,8 +157,6 @@
                         <td><%= confession.text %></td>
                         <td><%= confession.score %></td>
                         <td><%= confession.archived %></td>
-                        <td><%= confession.ipAddress || 'N/A' %></td>
-                        <td><%= confession.userAgent || 'N/A' %></td>
                         <td>
                             <form action="/<%= ADMIN_PATH %>/edit/<%= confession.id %>" method="GET" style="margin: 0;">
                                 <button type="submit">Edit</button>

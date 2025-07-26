@@ -158,12 +158,6 @@
             <label style="display: flex; align-items: center; margin-top: 20px;">
                 <input type="checkbox" name="archived" <%= confession.archived ? 'checked' : '' %>> Archived
             </label>
-
-            <label for="ipAddress">IP Address:</label>
-            <input type="text" id="ipAddress" name="ipAddress" value="<%= confession.ipAddress %>">
-
-            <label for="userAgent">User Agent:</label>
-            <input type="text" id="userAgent" name="userAgent" value="<%= confession.userAgent %>">
             
             <button type="submit">Update</button>
             <a class="cancel" href="/<%= ADMIN_PATH %>">Cancel</a>
