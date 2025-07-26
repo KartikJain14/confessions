@@ -4,98 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal</title>
+    <!-- Import Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-image: url('/gradient.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #FFFFFF;
+            min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+        
+        .admin-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            box-sizing: border-box;
+        }
+
         h1 {
-            color: #333;
+            color: #ffffff;
             text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            font-family: 'Space Grotesk', sans-serif;
         }
+
+        h1 a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        h1 a:hover {
+            color: #FFFFFF;
+            text-decoration: underline;
+        }
+
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin: 20px 0;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.15),
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            overflow: hidden;
         }
+
         th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        button {
-            padding: 5px 10px;
-            margin-left: 5px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .alert {
             padding: 15px;
-            margin: 20px 0;
-            border-radius: 5px;
-            display: none; /* Hide by default, modify to show as needed */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            text-align: left;
+            color: #000000;
         }
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
+
+        th {
+            background: rgba(0, 0, 0, 0.05);
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
-        .alert-danger {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        button {
+            padding: 10px 18px;
+            background: #000000;
+            color: #FFFFFF;
+            border: 1px solid #000000;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.2s ease-in-out;
+            width: auto;
+        }
+        
+        /* Inversion hover effect */
+        button:hover {
+            background: #FFFFFF;
+            color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .admin-wrapper {
+                padding: 20px 15px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            table {
+                font-size: 0.9rem;
+                display: block;
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Admin Portal - <a href="/">Confessions</a></h1>
+    <div class="admin-wrapper">
+        <h1>Admin Portal - <a href="/">Confessions</a></h1>
 
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Text</th>
-            <th>Score</th>
-            <th>Archived</th>
-            <th>IP Address</th>
-            <th>User Agent</th>
-            <th>Actions</th>
-        </tr>
-        <% confessions.forEach(confession => { %>
-            <tr>
-                <td><%= confession.id %></td>
-                <td><%= confession.text %></td>
-                <td><%= confession.score %></td>
-                <td><%= confession.archived %></td>
-                <td><%= confession.ipAddress || 'N/A' %></td>
-                <td><%= confession.userAgent || 'N/A' %></td>
-                <td>
-                    <form action="/<%= ADMIN_PATH %>/edit/<%= confession.id %>" method="GET">
-                        <button type="submit">Edit</button>
-                    </form>
-                </td>
-            </tr>
-        <% }) %>
-    </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Text</th>
+                    <th>Score</th>
+                    <th>Archived</th>
+                    <th>IP Address</th>
+                    <th>User Agent</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% confessions.forEach(confession => { %>
+                    <tr>
+                        <td><%= confession.id %></td>
+                        <td><%= confession.text %></td>
+                        <td><%= confession.score %></td>
+                        <td><%= confession.archived %></td>
+                        <td><%= confession.ipAddress || 'N/A' %></td>
+                        <td><%= confession.userAgent || 'N/A' %></td>
+                        <td>
+                            <form action="/<%= ADMIN_PATH %>/edit/<%= confession.id %>" method="GET" style="margin: 0;">
+                                <button type="submit">Edit</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
