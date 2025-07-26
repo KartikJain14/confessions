@@ -153,8 +153,6 @@ app.post(`/${ADMIN_PATH}/update`, async (req, res) => {
     confession.text = text || confession.text;
     confession.score = score || confession.score;
     confession.archived = archived === 'on';
-    confession.ipAddress = ipAddress || confession.ipAddress;
-    confession.userAgent = userAgent || confession.userAgent;
     await confession.save(); // Save updated confession
     res.redirect(`/${ADMIN_PATH}`); // Redirect to admin panel
   } else {

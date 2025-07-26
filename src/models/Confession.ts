@@ -8,8 +8,6 @@ export class Confession extends Model {
   public score!: number;
   public createdAt!: Date;
   public archived!: boolean;
-  public ipAddress!: string;
-  public userAgent!: string;
 }
 
 // Function to initialize the Confession model
@@ -39,14 +37,6 @@ export const initializeConfessionModel = async (sequelize: Sequelize) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
-      },
-      ipAddress: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      userAgent: {
-        type: DataTypes.STRING,
-        allowNull: true,
       },
     },
     {
