@@ -158,14 +158,15 @@
                         <td><%= confession.score %></td>
                         <td><%= confession.archived %></td>
                         <td>
-                            <form action="/<%= ADMIN_PATH %>/edit/<%= confession.id %>" method="GET" style="margin: 0;">
+                            <form action="/admin/edit/<%= confession.id %>" method="GET" style="margin: 0;">
                                 <button type="submit">Edit</button>
                             </form>
                         </td>
                     </tr>
-                <% }) %>
-            </tbody>
-        </table>
+                    <% }) %>
+                </tbody>
+            </table>
+            <button onclick="window.location.href='/'">Go Home</button>
     </div>
 </body>
 </html>

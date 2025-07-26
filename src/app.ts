@@ -5,9 +5,9 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import initializeSequelize from './sequelize';
+import { basicAuth } from './authMiddleware';
 dotenv.config();
 
-const ADMIN_PATH = process.env.ADMIN_PATH || 'admin';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -84,19 +84,19 @@ app.get('/confession/:id', async (req, res) => {
 });
 
 // Render the admin panel with all confessions
-app.get(`/${ADMIN_PATH}`, async (req, res) => {
+app.get(`/admin`, basicAuth, async (req, res) => {
   const confessions = await Confession.findAll();
-  res.render('admin', { confessions, ADMIN_PATH });
+  res.render('admin', { confessions });
 });
 
 // Render the edit form for a specific confession
-app.get(`/${ADMIN_PATH}/edit/:id`, async (req, res) => {
+app.get(`/admin/edit/:id`, basicAuth, async (req, res) => {
   const confession = await Confession.findByPk(req.params.id);
   if (!confession) {
     res.status(404).send('Confession not found'); // Handle not found
     return;
   }
-  res.render('edit', { confession, ADMIN_PATH });
+  res.render('edit', { confession });
 });
 
 // POST Routes
@@ -145,7 +145,7 @@ app.post('/confess/vote/:id/:vote', voteLimiter, async (req, res) => {
 });
 
 // Handle updates to a confession
-app.post(`/${ADMIN_PATH}/update`, async (req, res) => {
+app.post(`/admin/update`, basicAuth, async (req, res) => {
   const { id, text, score, archived, ipAddress, userAgent } = req.body;
   const confession = await Confession.findByPk(id);
 
@@ -154,19 +154,19 @@ app.post(`/${ADMIN_PATH}/update`, async (req, res) => {
     confession.score = score || confession.score;
     confession.archived = archived === 'on';
     await confession.save(); // Save updated confession
-    res.redirect(`/${ADMIN_PATH}`); // Redirect to admin panel
+    res.redirect(`/admin`); // Redirect to admin panel
   } else {
     res.status(404).send('Confession not found'); // Handle not found
   }
 });
 
 // Handle deletion of a confession
-app.post(`/${ADMIN_PATH}/delete/:id`, async (req, res) => {
+app.post(`/admin/delete/:id`, basicAuth, async (req, res) => {
   const confession = await Confession.findByPk(req.params.id);
   
   if (confession) {
     await confession.destroy(); // Delete confession
-    res.redirect(`/${ADMIN_PATH}`); // Redirect to admin panel
+    res.redirect(`/admin`); // Redirect to admin panel
   } else {
     res.status(404).send('Confession not found'); // Handle not found
   }

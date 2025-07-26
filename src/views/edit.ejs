@@ -146,7 +146,7 @@
 <body>
     <div class="edit-wrapper">
         <h1>Edit Confession</h1>
-        <form action="/<%= ADMIN_PATH %>/update" method="POST">
+        <form action="/admin/update" method="POST">
             <input type="hidden" name="id" value="<%= confession.id %>">
             
             <label for="text">Confession Text:</label>
@@ -160,7 +160,7 @@
             </label>
             
             <button type="submit">Update</button>
-            <a class="cancel" href="/<%= ADMIN_PATH %>">Cancel</a>
+            <a class="cancel" href="/admin">Cancel</a>
         </form>
     </div>
 </body>

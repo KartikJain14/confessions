@@ -42,7 +42,9 @@ Follow these steps to host your own Confession App:
 
    PORT=3000
    
-   ADMIN_PATH=admin
+   ADMIN_USER=admin
+
+   ADMIN_PASS=admin
    
    VOTE_WINDOW=3 # hours
    
@@ -75,17 +77,18 @@ Follow these steps to host your own Confession App:
 | GET    | `/confession/:id`    | View a specific confession            |
 | POST   | `/confess`           | Submit a new confession               |
 | POST   | `/confess/vote/:id/:vote` | Vote on a confession             |
-| GET    | `/${ADMIN_PATH}`     | View the admin panel                  |
-| GET    | `/${ADMIN_PATH}/edit/:id` | Edit a specific confession        |
-| POST   | `/${ADMIN_PATH}/update` | Update a confession                 |
-| POST   | `/${ADMIN_PATH}/delete/:id` | Delete a confession             |
+| GET    | `/admin`     | View the admin panel                  |
+| GET    | `/admin/edit/:id` | Edit a specific confession        |
+| POST   | `/admin/update` | Update a confession                 |
+| POST   | `/admin/delete/:id` | Delete a confession             |
 
 ## ⚙️ Configuration
 
 Make sure to set the following environment variables in your `.env` file:
 
 - **`PORT`**: Port on which the server will run (default: 3000).
-- **`ADMIN_PATH`**: Path for admin routes (default: `admin`).
+- **`ADMIN_USER`**: Username for admin route (default: `admin`).
+- **`ADMIN_PASS`**: Password for admin route (default: `admin`).
 - **`VOTE_WINDOW`**: Time window for vote limiting in hours (default: 1).
 - **`VOTE_LIMIT`**: Maximum votes per IP per time window (default: 15).
 - **`POST_WINDOW`**: Time window for post limiting in hours (default: 1).
