@@ -1,5 +1,4 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
-import initializeSequelize from '../sequelize';
 
 // Define the model class
 export class Confession extends Model {
